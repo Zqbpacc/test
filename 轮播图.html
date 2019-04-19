@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title></title>
+<style>
+	* {margin:0; padding:0; }
+	li{list-style:none; }
+	#div1 {width:850px; height:500px; margin:50px auto; overflow:hidden; position:relative;}
+	#div1 ul li{height:500px;opacity: 0;position: absolute;left: 0;top: 0;z-index: 0;transition: opacity 1s;}
+	#div1 ul li.ac{z-index: 5;opacity: 1;}
+	#div1 ol {position:absolute;right: 10%;bottom: 10px;z-index:6}
+	#div1 ol li{width: 20px;height: 20px;background: #fff;margin-left: 5px;float: left;line-height: 20px;text-align: center;cursor: pointer;border-radius: 50%;}
+	#div1 ol li.ac{background: red;color: #fff;}
+	#div1>a{text-decoration: none;position: absolute;top: 50%;margin-top: -10px;height: 40px;line-height: 32px;text-align: center;width: 40px;font-size: 40px;vertical-align: middle;color: #fff;background: rgba(0,0,0,0.5);z-index:6;}
+	#goPrev{left: 0;}
+	#goNext{right: 0;}
+	img{width:850px; height:500px;}
+	
+</style>
+</head>
+
+<body>
+<div id="div1">
+	<ul class="begin">
+    	<li class="ac"><a href="javascript:alert(0);"><img src="img/1.jpg" /></a></li>
+    	<li><a href="javascript:alert(1);"><img src="img/2.jpg" /></a></li>
+    	<li><a href="javascript:alert(2);"><img src="img/3.jpg" /></a></li>
+    	<li><a href="javascript:alert(3);"><img src="img/4.jpg" /></a></li>
+    	<li><a href="javascript:alert(4);"><img src="img/5.jpg" /></a></li>
+    </ul>
+   <div class="edd"></div>
+    <ol>
+    	<li class="ac">1</li>
+    	<li>2</li>
+    	<li>3</li>
+    	<li>4</li>
+    	<li>5</li>
+    </ol>
+    
+    <a href="javascript:;" id="goPrev">&laquo;</a>
+    <a href="javascript:;" id="goNext">&raquo;</a>
+</div>
+	<script type="text/javascript">
+		var div=document.querySelector("#div1");
+		var imgs=div.querySelector("ul").children;
+		var btns=div.querySelector("ol").children;
+		var goPerv=document.querySelector("#goPrev");
+		var goNext=document.querySelector("#goNext");
+		
+		var index=0;
+		var lastIndex=0;
+		var timer=null;
+		
+		function changeImg(){
+			console.log(index,lastIndex);
+			btns[lastIndex].classList.remove("ac");
+			imgs[lastIndex].classList.remove("ac");
+			btns[index].classList.add("ac");
+			imgs[index].classList.add("ac");
+			lastIndex=index;
+		}
+		
+		Array.from(btns).forEach(function (btn, i){
+			btn.onclick=function(){
+				index=i;
+				changeImg();
+			}
+		})
+	
+		goNext.onclick=function(){
+			index++;
+			if(index===btns.length)index=0;
+			changeImg();
+		}
+		
+		goPrev.onclick=function(){
+			index--;
+			if(index<0)index=btns.length-1;
+			changeImg();
+		}
+		
+		function autoPlay(){
+			timer=setInterval(function(){
+				goNext.onclick();
+			},2000)
+		}
+		autoPlay();
+		
+		div.onmouseenter=function(){
+			clearInterval(timer);
+		}
+		
+		div.onmouseleave=autoPlay;
+	</script>
+	</body>
+</html>
